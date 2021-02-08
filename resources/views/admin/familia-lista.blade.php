@@ -4,6 +4,10 @@
 
 @section('body_familia')
 
+    <div class="pagination justify-content-end">
+        {!! $familias->links('vendor.pagination.bootstrap-4') !!}    
+    </div>
+
     <table class="table table-responsive-xl table-striped">
         <thead>
             <tr>
@@ -38,11 +42,17 @@
                     {{ $familia->status }}
                 </td>
                 <td>
-                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                    
-                        <form method="post" action="{{ url('conta/familia_del') }}">
-                            {{ csrf_field() }}<input type="hidden" name="id" value="{{ $familia->id }}">
-                            <button type="submit" class="btn btn-danger" ><i class="fas fa-trash-alt"></i></button>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                        <form method="post" action="{{ url('admin/familia/pesquisa') }}">
+                        @csrf
+                            <input type="hidden" name="tipo" value="id">
+                            <input type="hidden" name="dado" value="{{ $familia->id }}">
+                            <button type="submit" class="btn btn-info btn-sm" >Ver</button>
+                        </form>
+                        <form method="post" action="{{ url('admin/familia/show') }}">
+                        @csrf
+                            <input type="hidden" name="id" value="{{ $familia->id }}">
+                            <button type="submit" class="btn btn-primary btn-sm" >Editar</button>
                         </form>
                     </div>
                 </td>

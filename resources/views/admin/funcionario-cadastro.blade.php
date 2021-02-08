@@ -9,7 +9,7 @@
         @endcomponent
     @endif
 
-    <form action="{{ url('admin/create_funcionario') }}" method="post">
+    <form action="{{ url('admin/create_funcionario') }}" method="post"> 
     @csrf
 
         <div class="row">
@@ -57,7 +57,12 @@
             </div>
             <div class="col-3">
                 <label for="cadastroFuncionarioNaturalidade" class="form-label">Naturalidade</label>
-                <input type="text" class="form-control" id="cadastroFuncionarioNaturalidade" name="naturalidade" placeholder="lugar que nasceu">
+                <input class="form-control" list="datalistOptionsNatu" id="cadastroFuncionarioNaturalidade" name="naturalidade" placeholder="cidade que nasceu">
+                <datalist id="datalistOptionsNatu">
+                    @foreach ($cidades as $cidade) 
+                            <option> {{ $cidade['nome'] }}</option>
+                    @endforeach
+                </datalist>
             </div>
         </div>
 
@@ -98,11 +103,24 @@
         <div class="row">
             <div class="col">
                 <label for="cadastroFuncionarioEstado" class="form-label">Estado</label>
-                <input type="text" class="form-control" id="cadastroFuncionarioEstado" name="estado" placeholder="Pará">
+                <select class="form-select" id="cadastroFuncionarioEstado" name="estado">
+                    @foreach ($estados as $estado) 
+                        @if($estado['nome'] === 'Pará')
+                            <option selected value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @else
+                            <option value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
             <div class="col">
                 <label for="cadastroFuncionarioCidade" class="form-label">Cidade</label>
-                <input type="text" class="form-control" id="cadastroFuncionarioCidade" name="cidade" placeholder="cidade onde mora">
+                <input class="form-control" list="datalistOptions" id="cadastroFuncionarioCidade" name="cidade" placeholder="cidade que mora">
+                <datalist id="datalistOptions">
+                    @foreach ($cidades as $cidade) 
+                            <option> {{ $cidade['nome'] }}</option>
+                    @endforeach
+                </datalist>
             </div>
             <div class="col">
                 <label for="cadastroFuncionarioBairro" class="form-label">Bairro</label>
@@ -175,7 +193,7 @@
 
         <br>
 
-        <button type="submit" class="btn btn-success">Salvar</button>  
+        <button type="submit" class="btn btn-primary">Salvar</button>  
         
         <br>
     </form>

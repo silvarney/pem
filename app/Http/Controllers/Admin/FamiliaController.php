@@ -113,7 +113,7 @@ class FamiliaController extends Controller
                 })
                 ->select('familias.*', 'comunidades.nome as comunidade', 'areas.unidade as area', 'microareas.nome as microarea')
                 ->orderBy('familias.numero', 'asc')
-                ->get();
+                ->paginate(15);
 
         return view('admin.familia-lista', compact('familias'));
     }

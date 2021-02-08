@@ -24,7 +24,7 @@
     <div class="container">
 
         <div class="d-grid gap-2 d-md-flex justify-content-md-end">
-            <button class="btn btn-outline-primary btn-lg" type="button">Entrar</button>
+            <a class="btn btn-outline-primary btn-lg" href="{{ url('admin') }}">Entrar</a>
         </div>
 
                   

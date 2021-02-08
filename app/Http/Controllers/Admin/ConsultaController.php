@@ -4,6 +4,10 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Consulta;
+use App\Models\Paciente;
+use App\Models\Funcionario;
 
 class ConsultaController extends Controller
 {
@@ -14,7 +18,10 @@ class ConsultaController extends Controller
      */
     public function index()
     {
-        return view('admin.consulta-cadastro');
+        $pacientes = Paciente::orderBy('nome', 'asc')->get();
+        $funcionarios = Funcionario::orderBy('nome', 'asc')->get();
+        
+        return view('admin.consulta-cadastro', compact('pacientes', 'funcionarios'));
     }
 
     /**
@@ -35,7 +42,8 @@ class ConsultaController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        Consulta::create($request->all());
+        return redirect('/admin/consulta/cadastro')->with('success', 'A consulta');
     }
 
     /**
@@ -46,7 +54,12 @@ class ConsultaController extends Controller
      */
     public function show($id)
     {
-        //
+        $consulta = Consulta::find($id);
+
+        $pacientes = Paciente::orderBy('nome', 'asc')->get();
+        $funcionarios = Funcionario::orderBy('nome', 'asc')->get();
+
+        return view('admin.consulta-editar', compact('consulta', 'pacientes', 'funcionarios'));
     }
 
     /**
@@ -67,9 +80,13 @@ class ConsultaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        unset($request['_token']);
+        
+        Consulta::where('id', $request->id)->update($request->all());
+
+        return redirect('admin/consulta/lista')->with('update', 'A consulta!');  
     }
 
     /**
@@ -78,8 +95,25 @@ class ConsultaController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function destroy($id)
+    public function destroy($id) 
     {
-        //
+        Consulta::destroy($id);
+        return redirect('/admin/consulta/lista')->with('delete', 'A consulta');
+    }
+
+    public function view_lista()
+    {
+        $consultas = DB::table('consultas')
+                ->join('pacientes', function ($join) {
+                    $join->on('consultas.paciente_id', '=', 'pacientes.id');
+                })
+                ->join('funcionarios', function ($join) {
+                    $join->on('consultas.funcionario_id', '=', 'funcionarios.id');
+                })
+                ->select('consultas.*', 'pacientes.nome as paciente', 'funcionarios.nome as funcionario')
+                ->orderBy('consultas.updated_at', 'asc')
+                ->paginate(15);
+
+        return view('admin.consulta-lista', compact('consultas'));
     }
 }

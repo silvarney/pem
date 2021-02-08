@@ -35,11 +35,24 @@
         <div class="row">
             <div class="col">
                 <label for="cadastroAreaEstado" class="form-label">Estado</label>
-                <input type="text" class="form-control" id="cadastroAreaEstado" name="estado" placeholder="Pará">
+                <select class="form-select" id="cadastroAreaEstado" name="estado">
+                    @foreach ($estados as $estado) 
+                        @if($estado['nome'] === 'Pará')
+                            <option selected value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @else
+                            <option value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
             <div class="col">
                 <label for="cadastroAreaCidade" class="form-label">Cidade</label>
-                <input type="text" class="form-control" id="cadastroAreaCidade" name="cidade" placeholder="cidade onde mora">
+                <input class="form-control" list="datalistOptions" id="cadastroAreaCidade" name="cidade" placeholder="cidade">
+                <datalist id="datalistOptions">
+                    @foreach ($cidades as $cidade) 
+                            <option> {{ $cidade['nome'] }}</option>
+                    @endforeach
+                </datalist>
             </div>
             <div class="col">
                 <label for="cadastroAreaBairro" class="form-label">Bairro</label>
@@ -47,7 +60,7 @@
             </div>
             <div class="col">
                 <label for="cadastroAreaCep" class="form-label">CEP</label>
-                <input type="text" class="form-control" id="cadastroAreaCep" name="cep" placeholder="00000-000">
+                <input type="text" class="form-contr cep" id="cadastroAreaCep" name="cep" placeholder="00000-000">
             </div>
             
         </div>
@@ -86,7 +99,7 @@
 
         <br>
 
-        <button type="submit" class="btn btn-success">Salvar</button>  
+        <button type="submit" class="btn btn-primary">Salvar</button>  
     </form>    
     
     <br>

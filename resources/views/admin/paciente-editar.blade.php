@@ -4,18 +4,14 @@
 
 @section('body_page')
 
-    @if (session('success'))
-        @component('alerta.sucesso-cadastro')
-        @endcomponent
-    @endif
-
-    <form action="{{ url('admin/create_paciente') }}" method="post">
+    <form action="{{ url('admin/update_paciente') }}" method="post">
     @csrf
+        <input type="hidden" name="id" value="{{ $paciente->id }}">
 
         <div class="row">
             <div class="col-5">
                 <label for="cadastroPacienteNome" class="form-label">Nome</label>
-                <input type="text" style="text-transform:uppercase;" class="form-control" id="cadastroPacienteNome" name="nome" value="{{ $paciente->nome }}">
+                <input type="text" class="form-control" id="cadastroPacienteNome" name="nome" value="{{ $paciente->nome }}">
             </div>
             <div class="col-2">
                 <label for="cadastroPacienteNascimento" class="form-label">Nascimento</label>
@@ -49,15 +45,20 @@
         <div class="row">
             <div class="col">
                 <label for="cadastroPacientePai" class="form-label">Pai</label>
-                <input type="text" style="text-transform:uppercase;" class="form-control" id="cadastroPacientePai" name="pai" value="{{ $paciente->pai }}">
+                <input type="text" class="form-control" id="cadastroPacientePai" name="pai" value="{{ $paciente->pai }}">
             </div>
             <div class="col">
                 <label for="cadastroPacienteMae" class="form-label">Mãe</label>
-                <input type="text" style="text-transform:uppercase;" class="form-control" id="cadastroPacienteMae" name="mae" value="{{ $paciente->mae }}">
+                <input type="text" class="form-control" id="cadastroPacienteMae" name="mae" value="{{ $paciente->mae }}">
             </div>
             <div class="col-3">
                 <label for="cadastroPacienteNaturalidade" class="form-label">Naturalidade</label>
-                <input type="text" class="form-control" id="cadastroPacienteNaturalidade" name="naturalidade" value="{{ $paciente->naturalidade }}">
+                <input class="form-control" list="datalistOptionsNatu" value="{{ $paciente->naturalidade }}" id="cadastroPacienteNaturalidade" name="naturalidade" placeholder="cidade que nasceu">
+                <datalist id="datalistOptionsNatu">
+                    @foreach ($cidades as $cidade) 
+                            <option> {{ $cidade['nome'] }}</option>
+                    @endforeach
+                </datalist>
             </div>
         </div>
 
@@ -78,7 +79,7 @@
             </div>
             <div class="col">
             <label for="cadastroPacienteCartao" class="form-label">Cartão SUS</label>
-                <input type="text" class="form-control" id="cadastroPacienteCartao" name="cartao" value="{{ $paciente->cartao }}">
+                <input type="text" class="form-control cartao" id="cadastroPacienteCartao" name="cartao" value="{{ $paciente->cartao }}">
             </div>
             <div class="col">
             <label for="cadastroPacientePronturario" class="form-label">Número Prontuário</label>
@@ -88,8 +89,8 @@
                 <label for="cadastroPacienteStatus" class="form-label">Status</label>
                 <select id="cadastroPacienteStatus" class="form-select" name="status">
                     <option value="{{ $paciente->status }}">{{ $paciente->status }}</option>
-                    <option value="Ativo">Ativo</option>
-                    <option value="Óbito">Óbito</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="óbito">Óbito</option>
                 </select>
             </div>
         </div>
@@ -99,11 +100,26 @@
         <div class="row">
             <div class="col">
                 <label for="cadastroPacienteEstado" class="form-label">Estado</label>
-                <input type="text" class="form-control" id="cadastroPacienteEstado" name="estado" value="{{ $paciente->estado }}">
+                <select class="form-select" id="cadastroPacienteEstado" name="estado">
+                    @foreach ($estados as $estado) 
+                        @if($estado['nome'] === $paciente->estado)
+                            <option selected value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @elseif($estado['nome'] === 'Pará')
+                            <option selected value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @else
+                            <option value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
             <div class="col">
                 <label for="cadastroPacienteCidade" class="form-label">Cidade</label>
-                <input type="text" class="form-control" id="cadastroPacienteCidade" name="cidade" value="{{ $paciente->cidade }}">
+                <input class="form-control" list="datalistOptions" value="{{ $paciente->cidade }}" id="cadastroPacienteCidade" name="cidade" placeholder="cidade que mora">
+                <datalist id="datalistOptions">
+                    @foreach ($cidades as $cidade) 
+                            <option> {{ $cidade['nome'] }}</option>
+                    @endforeach
+                </datalist>
             </div>
             <div class="col">
                 <label for="cadastroPacienteBairro" class="form-label">Bairro</label>
@@ -153,7 +169,7 @@
 
         <div class="mb-3">
             <label for="cadastroPacienteComplemento" class="form-label">Complemento</label>
-            <textarea class="form-control" id="cadastroPacienteComplemento" rows="3" name="complemento" value="{{ $paciente->complemento }}"></textarea>
+            <textarea class="form-control" id="cadastroPacienteComplemento" rows="3" name="complemento">{{ $paciente->complemento }}</textarea>
         </div>
 
         <br>
@@ -211,20 +227,22 @@
 
         <br>
 
-        <div class="btn-group" role="group" aria-label="Basic example">
-            <a class="btn btn-secondary" href="{{ url('admin/paciente/lista') }}">Voltar</a> 
-            <button type="submit" class="btn btn-success">Salvar</button>  
-        </div>
+        <button type="submit" class="btn btn-primary">Salvar</button>  
+        <a class="btn btn-secondary" href="{{ url('admin/paciente/lista') }}">Voltar</a> 
+        
         
     </form>
 
     <br>
 
     <script>
-        
-        var nasc = document.getElementById('cadastroPacienteNascimento');
-        
+    window.onload = initPage;
 
+        function initPage(){
+            var nasc = document.getElementById('cadastroPacienteNascimento');
+            calcular(nasc.value);
+        }
+        
         nasc.onblur = function(){
             
             calcular(nasc.value);

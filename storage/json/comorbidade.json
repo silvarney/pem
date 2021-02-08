@@ -1,0 +1,11 @@
+
+{
+    "transmissiveis": [
+        {"doenca":"AIDS/HIV"},
+        {"nome":"Hanseníase"}
+    ],
+    "naotransmissiveis": [
+        {"doenca":"Asma"},
+        {"nome":"AVC"}
+        ]
+}

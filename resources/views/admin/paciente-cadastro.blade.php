@@ -4,10 +4,8 @@
 
 @section('body_page')
 
-    @if (session('success'))
-        @component('alerta.sucesso-cadastro')
-        @endcomponent
-    @endif
+    @component('alerta.alertas')
+    @endcomponent
 
     <form action="{{ url('admin/create_paciente') }}" method="post">
     @csrf
@@ -15,7 +13,7 @@
         <div class="row">
             <div class="col-5">
                 <label for="cadastroPacienteNome" class="form-label">Nome</label>
-                <input type="text" style="text-transform:uppercase;" class="form-control" id="cadastroPacienteNome" name="nome" placeholder="nome completo">
+                <input type="text" class="form-control" id="cadastroPacienteNome" name="nome" placeholder="nome completo">
             </div>
             <div class="col-2">
                 <label for="cadastroPacienteNascimento" class="form-label">Nascimento</label>
@@ -49,15 +47,20 @@
         <div class="row">
             <div class="col">
                 <label for="cadastroPacientePai" class="form-label">Pai</label>
-                <input type="text" style="text-transform:uppercase;" class="form-control" id="cadastroPacientePai" name="pai" placeholder="nome do pai">
+                <input type="text" class="form-control" id="cadastroPacientePai" name="pai" placeholder="nome do pai">
             </div>
             <div class="col">
                 <label for="cadastroPacienteMae" class="form-label">Mãe</label>
-                <input type="text" style="text-transform:uppercase;" class="form-control" id="cadastroPacienteMae" name="mae" placeholder="nome da mãe">
+                <input type="text" class="form-control" id="cadastroPacienteMae" name="mae" placeholder="nome da mãe">
             </div>
             <div class="col-3">
                 <label for="cadastroPacienteNaturalidade" class="form-label">Naturalidade</label>
-                <input type="text" class="form-control" id="cadastroPacienteNaturalidade" name="naturalidade" placeholder="lugar que nasceu">
+                <input class="form-control" list="datalistOptionsNatu" id="cadastroPacienteNaturalidade" name="naturalidade" placeholder="cidade que nasceu">
+                <datalist id="datalistOptionsNatu">
+                    @foreach ($cidades as $cidade) 
+                            <option> {{ $cidade['nome'] }}</option>
+                    @endforeach
+                </datalist>
             </div>
         </div>
 
@@ -78,7 +81,7 @@
             </div>
             <div class="col">
             <label for="cadastroPacienteCartao" class="form-label">Cartão SUS</label>
-                <input type="text" class="form-control" id="cadastroPacienteCartao" name="cartao" placeholder="000000000000000">
+                <input type="text" class="form-control cartao" id="cadastroPacienteCartao" name="cartao" placeholder="000 0000 0000 0000">
             </div>
             <div class="col">
             <label for="cadastroPacientePronturario" class="form-label">Número Prontuário</label>
@@ -87,8 +90,8 @@
             <div class="col">
                 <label for="cadastroPacienteStatus" class="form-label">Status</label>
                 <select id="cadastroPacienteStatus" class="form-select" name="status">
-                    <option value="Ativo">Ativo</option>
-                    <option value="Óbito">Óbito</option>
+                    <option value="ativo">Ativo</option>
+                    <option value="óbito">Óbito</option>
                 </select>
             </div>
         </div>
@@ -98,11 +101,24 @@
         <div class="row">
             <div class="col">
                 <label for="cadastroPacienteEstado" class="form-label">Estado</label>
-                <input type="text" class="form-control" id="cadastroPacienteEstado" name="estado" placeholder="Pará">
+                <select class="form-select" id="cadastroPacienteEstado" name="estado">
+                    @foreach ($estados as $estado) 
+                        @if($estado['nome'] === 'Pará')
+                            <option selected value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @else
+                            <option value="{{ $estado['sigla'] }}"> {{ $estado['nome'] }}</option>
+                        @endif
+                    @endforeach
+                </select>
             </div>
             <div class="col">
                 <label for="cadastroPacienteCidade" class="form-label">Cidade</label>
-                <input type="text" class="form-control" id="cadastroPacienteCidade" name="cidade" placeholder="cidade onde mora">
+                <input class="form-control" list="datalistOptions" id="cadastroPacienteCidade" name="cidade" placeholder="cidade que mora">
+                <datalist id="datalistOptions">
+                    @foreach ($cidades as $cidade) 
+                            <option> {{ $cidade['nome'] }}</option>
+                    @endforeach
+                </datalist>
             </div>
             <div class="col">
                 <label for="cadastroPacienteBairro" class="form-label">Bairro</label>
@@ -193,7 +209,7 @@
 
         <br>
 
-        <button type="submit" class="btn btn-success">Salvar</button>  
+        <button type="submit" class="btn btn-primary">Salvar</button>  
         
     </form>
 

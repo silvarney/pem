@@ -4,6 +4,10 @@
 
 @section('body_area')
 
+    <div class="pagination justify-content-end">
+        {!! $areas->links('vendor.pagination.bootstrap-4') !!}    
+    </div>
+
     <table class="table table-responsive-xl table-striped">
         <thead>
             <tr>
@@ -38,16 +42,17 @@
                     {{ $area->status }}
                 </td>
                 <td>
-                <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
-                    @if ($area->area_status === 'publicada')
-                        <form method="post" action="{{ url('conta/area_arq') }}">
-                            {{ csrf_field() }}<input type="hidden" name="id" value="{{ $area->area_id }}">
-                            <button type="submit" class="btn btn-success" ><i class="fas fa-check"></i></button>
+                    <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
+                        <form method="post" action="{{ url('admin/area/pesquisa') }}">
+                        @csrf
+                            <input type="hidden" name="tipo" value="id">
+                            <input type="hidden" name="dado" value="{{ $area->id }}">
+                            <button type="submit" class="btn btn-info btn-sm" >Ver</button>
                         </form>
-                    @endif
-                        <form method="post" action="{{ url('conta/area_del') }}">
-                            {{ csrf_field() }}<input type="hidden" name="id" value="{{ $area->area_id }}">
-                            <button type="submit" class="btn btn-danger" ><i class="fas fa-trash-alt"></i></button>
+                        <form method="post" action="{{ url('admin/area/show') }}">
+                        @csrf
+                            <input type="hidden" name="id" value="{{ $area->id }}">
+                            <button type="submit" class="btn btn-primary btn-sm" >Editar</button>
                         </form>
                     </div>
                 </td>

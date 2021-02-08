@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use App\Models\Comorbidade;
+use App\Models\Paciente;
 
 class ComorbidadeController extends Controller
 {
@@ -14,7 +17,8 @@ class ComorbidadeController extends Controller
      */
     public function index()
     {
-        return view('admin.comorbidade-cadastro');
+        $pacientes = Paciente::orderBy('nome', 'asc')->get();
+        return view('admin.comorbidade-cadastro', compact('pacientes'));
     }
 
     /**
@@ -35,7 +39,10 @@ class ComorbidadeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $request['user_id'] = 1;
+
+        Comorbidade::create($request->all());
+        return redirect('/admin/comorbidade/cadastro')->with('success', 'A comorbidade');
     }
 
     /**
@@ -46,7 +53,10 @@ class ComorbidadeController extends Controller
      */
     public function show($id)
     {
-        //
+        $comorbidade = Comorbidade::find($id);
+        $pacientes = Paciente::orderBy('nome', 'asc')->get();
+
+        return view('admin.comorbidade-editar', compact('comorbidade', 'pacientes'));
     }
 
     /**
@@ -67,9 +77,13 @@ class ComorbidadeController extends Controller
      * @param  int  $id
      * @return \Illuminate\Http\Response
      */
-    public function update(Request $request, $id)
+    public function update(Request $request)
     {
-        //
+        unset($request['_token']);
+        
+        Comorbidade::where('id', $request->id)->update($request->all());
+
+        return redirect('admin/comorbidade/lista')->with('update', 'A comorbidade');  
     }
 
     /**
@@ -80,6 +94,20 @@ class ComorbidadeController extends Controller
      */
     public function destroy($id)
     {
-        //
+        Comorbidade::destroy($id);
+        return redirect('/admin/comorbidade/lista')->with('delete', 'A comorbidade');
+    }
+
+    public function view_lista()
+    {
+        $comorbidades = DB::table('comorbidades')
+                ->join('pacientes', function ($join) {
+                    $join->on('comorbidades.paciente_id', '=', 'pacientes.id');
+                })
+                ->select('comorbidades.*', 'pacientes.nome as paciente')
+                ->orderBy('comorbidades.tipo', 'asc')
+                ->paginate(15);
+
+        return view('admin.comorbidade-lista', compact('comorbidades'));
     }
 }

@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Admin;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request; 
 use Illuminate\Support\Facades\DB;
+use App\Models\Json;
 use App\Models\Funcionario;
 use App\Models\Area;
 
@@ -28,6 +29,9 @@ class FuncionarioController extends Controller
      */
     public function store(Request $request)
     {
+        $request['nome'] = mb_strtoupper($request->nome, 'UTF-8');
+        $request['pai'] = mb_strtoupper($request->pai, 'UTF-8');
+        $request['mae'] = mb_strtoupper($request->mae, 'UTF-8');
         Funcionario::create($request->all());
         return redirect('/admin/posto/funcionario/cadastro')->with('success', 'Item cadastrado com sucesso!');
     }
@@ -77,10 +81,15 @@ class FuncionarioController extends Controller
         //
     }
 
-    public function view_cadastro()
+    public function view_cadastro(Json $json)
     {
         $areas = Area::where('status', 'ativo')->orderBy('unidade', 'asc')->get();
-        return view('admin.funcionario-cadastro', compact('areas'));
+
+        $estados = $json->estados();
+
+        $cidades = $json->cidades();
+
+        return view('admin.funcionario-cadastro', compact('areas', 'estados', 'cidades'));
     }
 
     public function view_lista()
@@ -91,7 +100,7 @@ class FuncionarioController extends Controller
                 })
                 ->select('funcionarios.*', 'areas.unidade as area')
                 ->orderBy('funcionarios.nome', 'asc')
-                ->get();
+                ->paginate(15);
 
         return view('admin.funcionario-lista', compact('funcionarios'));
     }

@@ -108,7 +108,7 @@ class MicroareaController extends Controller
                 })
                 ->select('microareas.*', 'areas.unidade as area', 'funcionarios.nome as funcionario')
                 ->orderBy('microareas.nome', 'asc')
-                ->get();
+                ->paginate(15);
 
         return view('admin.microarea-lista', compact('microareas'));
     }

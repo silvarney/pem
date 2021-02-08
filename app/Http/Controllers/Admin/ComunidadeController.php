@@ -108,7 +108,7 @@ class ComunidadeController extends Controller
                 })
                 ->select('comunidades.*', 'areas.unidade as area', 'microareas.nome as microarea')
                 ->orderBy('comunidades.nome', 'asc')
-                ->get();
+                ->paginate(15);
 
         return view('admin.comunidade-lista', compact('comunidades'));
     }

@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use App\Models\Json;
 use App\Models\Area;
 
 class AreaController extends Controller
@@ -26,6 +27,8 @@ class AreaController extends Controller
     
      public function store(Request $request)
     {
+        $request['unidade'] = mb_strtoupper($request->unidade, 'UTF-8');
+
         Area::create($request->all());
         return redirect('/admin/posto/area/cadastro')->with('success', 'Item cadastrado com sucesso!');
     }
@@ -75,14 +78,18 @@ class AreaController extends Controller
         //
     }
 
-    public function view_cadastro()
+    public function view_cadastro(Json $json)
     {
-        return view('admin.area-cadastro');
+        $estados = $json->estados();
+
+        $cidades = $json->cidades();
+
+        return view('admin.area-cadastro', compact('estados', 'cidades'));
     }
 
     public function view_lista()
     {
-        $areas = Area::orderBy('unidade', 'asc')->get();
+        $areas = Area::orderBy('unidade', 'asc')->paginate(15);
         return view('admin.area-lista', compact('areas'));
     }
 }
