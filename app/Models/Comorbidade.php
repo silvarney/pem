@@ -14,5 +14,6 @@ class Comorbidade extends Model
         'doenca',
         'paciente_id',
         'user_id',
+        'area_id',
     ];
 }

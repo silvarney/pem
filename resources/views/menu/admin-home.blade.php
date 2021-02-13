@@ -84,17 +84,8 @@
             <li><a class="dropdown-item" href="{{ url('/admin/posto/funcionario') }}">Funcionários</a></li>
           </ul>
         </li>
-        <li class="nav-item dropdown">
-          <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            Relatórios
-          </a>
-          <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-            <li><a class="dropdown-item" href="#">Listar</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="{{ url('admin/usuario-cadastro') }}">Cadastrar</a></li>
-            <li><hr class="dropdown-divider"></li>
-            <li><a class="dropdown-item" href="#">Editar</a></li>
-          </ul>
+        <li class="nav-item">
+          <a class="nav-link" aria-current="page" href="{{ url('admin/relatorio') }}">Relatórios</a>
         </li>
         <li class="nav-item dropdown">
           <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-bs-toggle="dropdown" aria-expanded="false">

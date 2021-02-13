@@ -24,6 +24,9 @@ class CreateConsultasTable extends Migration
             $table->bigInteger('funcionario_id')->unsigned();
             $table->foreign('funcionario_id')->references('id')->on('funcionarios')->onDelete('cascade');
 
+            $table->bigInteger('area_id')->unsigned();
+            $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

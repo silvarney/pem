@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Json;
 use App\Models\Acompanhamento;
 
@@ -41,6 +42,7 @@ class AcompanhamentoController extends Controller
     public function store(Request $request)
     {
         $request['user_id'] = 1;
+        $request['area_id'] = 1;
 
         Acompanhamento::create($request->all());
         return redirect('/admin/acompanhamento/cadastro')->with('success', 'O acompanhamento');
@@ -102,7 +104,13 @@ class AcompanhamentoController extends Controller
 
     public function view_lista(Json $json)
     {
-        $acompanhamentos = Acompanhamento::orderBy('data', 'asc')->paginate(15);
+        $acompanhamentos = DB::table('acompanhamentos')
+            ->join('users', function ($join) {
+                $join->on('acompanhamentos.user_id', '=', 'users.id');
+            })
+            ->select('acompanhamentos.*', 'users.name as agente')
+            ->orderBy('acompanhamentos.inserido', 'desc')
+            ->paginate(15);
 
         $itens = $json->acompanhamentos();
 

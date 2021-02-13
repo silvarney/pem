@@ -12,7 +12,8 @@ class Demografico extends Model
     protected $fillable = [
         'item',
         'quantidade',
-        'data',
+        'inserido',
         'user_id',
+        'area_id',
     ];
 }

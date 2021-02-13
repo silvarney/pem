@@ -15,5 +15,6 @@ class Estoque extends Model
         'validade',
         'quantidade',
         'user_id',
+        'area_id',
     ];
 }

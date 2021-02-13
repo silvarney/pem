@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Demografico;
 
 class DemograficoController extends Controller
@@ -37,6 +38,7 @@ class DemograficoController extends Controller
     public function store(Request $request)
     {
         $request['user_id'] = 1;
+        $request['area_id'] = 1;
 
         Demografico::create($request->all());
         return redirect('/admin/demografico/cadastro')->with('success', 'O item');
@@ -96,7 +98,13 @@ class DemograficoController extends Controller
 
     public function view_lista()
     {
-        $demograficos = Demografico::orderBy('data', 'desc')->paginate(15);
+        $demograficos = DB::table('demograficos')
+            ->join('users', function ($join) {
+                $join->on('demograficos.user_id', '=', 'users.id');
+            })
+            ->select('demograficos.*', 'users.name as agente')
+            ->orderBy('demograficos.inserido', 'desc')
+            ->paginate(15);
 
         return view('admin.demografico-lista', compact('demograficos'));
     }

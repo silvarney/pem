@@ -30,8 +30,8 @@
                 <input type="number" class="form-control" id="cadastroAcompanhamentoQuantidade" name="quantidade">
             </div>
             <div class="col-2">
-                <label for="cadastroMoradiaData" class="form-label">Data</label>
-                <input type="date" class="form-control" id="cadastroMoradiaData" name="data">
+                <label for="cadastroMoradiaInserido" class="form-label">Data</label>
+                <input type="date" class="form-control" id="cadastroMoradiaInserido" name="inserido">
             </div>
         </div>
 

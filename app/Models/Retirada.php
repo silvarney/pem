@@ -14,6 +14,7 @@ class Retirada extends Model
         'paciente_id',
         'estoque_id',
         'user_id',
+        'area_id',
     ];
 
 }

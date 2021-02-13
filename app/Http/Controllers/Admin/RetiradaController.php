@@ -43,6 +43,7 @@ class RetiradaController extends Controller
     public function store(Request $request)
     {
         $request['user_id'] = 1;
+        $request['area_id'] = 1;
 
         Estoque::where('id', $request->estoque_id)->decrement('quantidade', $request->quantidade);
 

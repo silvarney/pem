@@ -18,7 +18,7 @@ class CreateAcompanhamentosTable extends Migration
 
             $table->string('item')->nullable();
             $table->integer('quantidade')->nullable();
-            $table->date('data')->nullable();
+            $table->date('inserido')->nullable();
 
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

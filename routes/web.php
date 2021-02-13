@@ -17,6 +17,7 @@ use App\Http\Controllers\Admin\FarmaciaController;
 use App\Http\Controllers\Admin\EstoqueController;
 use App\Http\Controllers\Admin\RetiradaController;
 use App\Http\Controllers\Admin\UsuarioController;
+use App\Http\Controllers\Admin\RelatorioController;
 
 /*
 |--------------------------------------------------------------------------
@@ -120,6 +121,10 @@ Route::prefix('admin')->group(function () {
     Route::post('/destroy_retirada', [RetiradaController::class, 'destroy']);
     Route::get('/destroy_demografico/{id}', [DemograficoController::class, 'destroy']);
     Route::get('/destroy_moradia/{id}', [MoradiaController::class, 'destroy']);
+
+    //relatorio
+    Route::get('/relatorio', [RelatorioController::class, 'index']);
+    Route::post('/print_perfil', [RelatorioController::class, 'teste']);
 
 });
 

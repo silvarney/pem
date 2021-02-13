@@ -38,6 +38,7 @@ class EstoqueController extends Controller
     {
         $request['produto'] = mb_strtoupper($request->produto, 'UTF-8');
         $request['user_id'] = 1;
+        $request['area_id'] = 1;
 
         Estoque::create($request->all());
         return redirect('/admin/farmacia/estoque/cadastro')->with('success', 'Item cadastrado com sucesso!');

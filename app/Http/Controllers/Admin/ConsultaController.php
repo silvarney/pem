@@ -42,6 +42,8 @@ class ConsultaController extends Controller
      */
     public function store(Request $request)
     {
+        $request['area_id'] = 1;
+        
         Consulta::create($request->all());
         return redirect('/admin/consulta/cadastro')->with('success', 'A consulta');
     }

@@ -17,6 +17,8 @@
                 <th scope="col">Item</th>
                 <th scope="col">Quantidade</th>
                 <th scope="col">Data</th>
+                <th scope="col">Agente de Saúde</th>
+                <th scope="col">Cadastrado</th>
                 <th>Ação</th>
             </tr>
         </thead>
@@ -30,7 +32,13 @@
                     {{ $acompanhamento->quantidade }}
                 </td>
                 <td>
-                    {{ date('d/m/Y', strtotime($acompanhamento->data)) }}
+                    {{ date('d/m/Y', strtotime($acompanhamento->inserido)) }}
+                </td>
+                <td>
+                    {{ $acompanhamento->agente }}
+                </td>
+                <td>
+                    {{ date('d/m/Y', strtotime($acompanhamento->created_at)) }}
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">

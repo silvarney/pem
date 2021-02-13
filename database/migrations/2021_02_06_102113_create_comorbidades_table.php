@@ -25,6 +25,9 @@ class CreateComorbidadesTable extends Migration
             $table->bigInteger('user_id')->unsigned();
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
 
+            $table->bigInteger('area_id')->unsigned();
+            $table->foreign('area_id')->references('id')->on('areas')->onDelete('cascade');
+
             $table->timestamps();
         });
     }

@@ -30,8 +30,8 @@
                 <input type="number" class="form-control" id="cadastroDemograficoQuantidade" name="quantidade">
             </div>
             <div class="col-2">
-                <label for="cadastroDemograficoData" class="form-label">Data</label>
-                <input type="date" class="form-control" id="cadastroDemograficoData" name="data">
+                <label for="cadastroDemograficoInserido" class="form-label">Data</label>
+                <input type="date" class="form-control" id="cadastroDemograficoInserido" name="inserido">
             </div>
         </div>
 

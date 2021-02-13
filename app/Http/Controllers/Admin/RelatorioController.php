@@ -4,6 +4,9 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
+use PDF;
+use App\Models\Acompanhamento;
 
 class RelatorioController extends Controller
 {
@@ -14,72 +17,27 @@ class RelatorioController extends Controller
      */
     public function index()
     {
-        //
+        return view('admin.relatorio-admin');
     }
 
-    /**
-     * Show the form for creating a new resource.
-     *
-     * @return \Illuminate\Http\Response
-     */
-    public function create()
-    {
-        //
-    }
 
-    /**
-     * Store a newly created resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @return \Illuminate\Http\Response
-     */
-    public function store(Request $request)
+    public function teste(Request $request)
     {
-        //
-    }
+        //variaveis
+        $inicio = $request->inicio;
+        $fim = $request->fim;
+        $fim_sql = date('Y-m-d', strtotime('+1 days', strtotime($request->fim)));
+        $unidade = "Patrimônio";
 
-    /**
-     * Display the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function show($id)
-    {
-        //
-    }
+        //instancias
+        $comorbidades = DB::select("SELECT COUNT(doenca) AS quantidade, doenca, tipo FROM comorbidades WHERE created_at BETWEEN ? AND ? group by doenca, tipo", [$inicio, $fim_sql]);
+        $demograficos = DB::select("SELECT SUM(quantidade) AS quantidade, item FROM demograficos WHERE inserido BETWEEN ? AND ? group by item", [$inicio, $fim_sql]);
+        $moradias = DB::select("SELECT SUM(quantidade) AS quantidade, item FROM moradias WHERE inserido BETWEEN ? AND ? group by item", [$inicio, $fim_sql]);
+        $acompanhamentos = DB::select("SELECT item, SUM(quantidade) AS quantidade FROM acompanhamentos WHERE inserido BETWEEN ? AND ? group by item", [$inicio, $fim_sql]);
 
-    /**
-     * Show the form for editing the specified resource.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function edit($id)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     *
-     * @param  \Illuminate\Http\Request  $request
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function update(Request $request, $id)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     *
-     * @param  int  $id
-     * @return \Illuminate\Http\Response
-     */
-    public function destroy($id)
-    {
-        //
+        //carregamento
+        $pdf = PDF::loadView('relatorio.teste', compact('unidade', 'inicio', 'fim', 'comorbidades', 'demograficos', 'moradias', 'acompanhamentos'));
+        $pdf->setPaper('a4', 'portrait');
+        return $pdf->stream('relatorio_teste.pdf'); //stream - download
     }
 }

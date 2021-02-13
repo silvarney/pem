@@ -25,8 +25,8 @@
                 <input type="number" class="form-control" id="cadastroAcompanhamentoQuantidade" name="quantidade">
             </div>
             <div class="col-2">
-                <label for="cadastroAcompanhamentoData" class="form-label">Data</label>
-                <input type="date" class="form-control" id="cadastroAcompanhamentoData" name="data">
+                <label for="cadastroAcompanhamentoInserido" class="form-label">Inserido</label>
+                <input type="date" class="form-control" id="cadastroAcompanhamentoInserido" name="inserido">
             </div>
         </div>
 

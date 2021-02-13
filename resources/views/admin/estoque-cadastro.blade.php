@@ -4,10 +4,8 @@
 
 @section('body_estoque')
 
-    @if (session('success'))
-    @component('alerta.sucesso-cadastro')
+    @component('alerta.alertas')
     @endcomponent
-    @endif
 
     <form action="{{ url('admin/create_estoque') }}" method="post">
     @csrf

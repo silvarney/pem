@@ -28,8 +28,8 @@
                 <input type="number" class="form-control" id="cadastroMoradiaQuantidade" name="quantidade" value="{{ $moradia->quantidade }}">
             </div>
             <div class="col-2">
-                <label for="cadastroMoradiaData" class="form-label">Data</label>
-                <input type="date" class="form-control" id="cadastroMoradiaData" name="data" value="{{ $moradia->data }}">
+                <label for="cadastroMoradiaInserido" class="form-label">Data</label>
+                <input type="date" class="form-control" id="cadastroMoradiaInserido" name="inserido" value="{{ $moradia->inserido }}">
             </div>
         </div>
 

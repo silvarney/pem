@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\DB;
 use App\Models\Moradia;
 
 class MoradiaController extends Controller
@@ -37,6 +38,7 @@ class MoradiaController extends Controller
     public function store(Request $request)
     {
         $request['user_id'] = 1;
+        $request['area_id'] = 1;
 
         Moradia::create($request->all());
         return redirect('/admin/moradia/cadastro')->with('success', 'O item');
@@ -96,7 +98,14 @@ class MoradiaController extends Controller
 
     public function view_lista()
     {
-        $moradias = Moradia::orderBy('data', 'desc')->paginate(15);
+        //$moradias = Moradia::orderBy('data', 'desc')->paginate(15);
+        $moradias = DB::table('moradias')
+            ->join('users', function ($join) {
+                $join->on('moradias.user_id', '=', 'users.id');
+            })
+            ->select('moradias.*', 'users.name as agente')
+            ->orderBy('moradias.inserido', 'desc')
+            ->paginate(15);
 
         return view('admin.moradia-lista', compact('moradias'));
     }

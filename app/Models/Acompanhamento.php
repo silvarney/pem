@@ -12,7 +12,7 @@ class Acompanhamento extends Model
     protected $fillable = [
         'item',
         'quantidade',
-        'data',
+        'inserido',
         'user_id',
     ];
 }

@@ -40,6 +40,7 @@ class ComorbidadeController extends Controller
     public function store(Request $request)
     {
         $request['user_id'] = 1;
+        $request['area_id'] = 1;
 
         Comorbidade::create($request->all());
         return redirect('/admin/comorbidade/cadastro')->with('success', 'A comorbidade');

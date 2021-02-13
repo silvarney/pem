@@ -27,8 +27,8 @@
                 <input type="number" class="form-control" id="editarAcompanhamentoQuantidade" name="quantidade" value="{{ $acompanhamento->quantidade }}">
             </div>
             <div class="col-2">
-                <label for="editarAcompanhamentoData" class="form-label">Data</label>
-                <input type="date" class="form-control" id="editarAcompanhamentoData" name="data" value="{{ $acompanhamento->data }}">
+                <label for="editarAcompanhamentoInserido" class="form-label">Inserido</label>
+                <input type="date" class="form-control" id="editarAcompanhamentoInserido" name="inserido" value="{{ $acompanhamento->inserido }}">
             </div>
         </div>
 

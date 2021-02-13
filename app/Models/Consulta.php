@@ -13,5 +13,6 @@ class Consulta extends Model
         'tipo',
         'paciente_id',
         'funcionario_id',
+        'area_id',
     ];
 }

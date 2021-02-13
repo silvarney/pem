@@ -19,6 +19,8 @@
                 <th scope="col">Item</th>
                 <th scope="col">Quantidade</th>
                 <th scope="col">Data</th>
+                <th scope="col">Agente de Saúde</th>
+                <th scope="col">Cadastrado</th>
                 <th>Ação</th>
             </tr>
         </thead>
@@ -32,7 +34,13 @@
                     {{ $demografico->quantidade }}
                 </td>
                 <td>
-                    {{ date('d/m/Y', strtotime($demografico->data)) }}
+                    {{ date('d/m/Y', strtotime($demografico->inserido)) }}
+                </td>
+                <td>
+                    {{ $demografico->agente }}
+                </td>
+                <td>
+                    {{ date('d/m/Y', strtotime($demografico->created_at)) }}
                 </td>
                 <td>
                     <div class="btn-group btn-group-sm" role="group" aria-label="Basic example">
